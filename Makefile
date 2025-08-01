@@ -29,5 +29,8 @@ valgrind:
 #dir:
 #	mkdir -pv $(BINDIR) $(SRCDIR) $(INCDIR) $(BUILDIR)
 
+run:
+	./app
+
 clean:
 	rm -rf app *.o
