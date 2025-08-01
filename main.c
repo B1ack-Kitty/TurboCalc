@@ -21,6 +21,11 @@ static void activate(GtkApplication *app)
     GtkWidget*      button;
     GtkWidget*      view;
     GtkTextBuffer*  buffer;
+    char*           input;
+    int             input_size;
+
+    input_size = 20;
+    input = malloc(sizeof(char) * input_size);
 
     // Window
     window = gtk_application_window_new(app);
@@ -46,8 +51,9 @@ static void activate(GtkApplication *app)
 
     // Buffer
     buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(view));
+    gtk_text_view_set_top_margin(GTK_TEXT_VIEW(view), 20);
+    gtk_text_buffer_set_text(buffer, input, -1);
 
-    gtk_text_buffer_set_text(buffer, "Hello!", -1);
 
     // Buttons
     button = gtk_button_new_with_label("1");
