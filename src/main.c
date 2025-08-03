@@ -3,6 +3,19 @@
 // Testing
 #include <stdio.h>
 
+struct Calculator
+{
+    int     num1;
+    int     num2;
+    int     result;
+}
+
+struct Output
+{
+    char*   output;
+    int     output_size;
+}
+
 // ASM
 extern int  add_v(int a, int b);
 extern int  sub_v(int a, int b);
@@ -21,11 +34,11 @@ static void activate(GtkApplication *app)
     GtkWidget*      button;
     GtkWidget*      view;
     GtkTextBuffer*  buffer;
-    char*           input;
-    int             input_size;
 
-    input_size = 20;
-    input = malloc(sizeof(char) * input_size);
+    struct Output o;
+
+    o.output_size = 10;
+    o.output = malloc(sizeof(char) * output_size);
 
     // Window
     window = gtk_application_window_new(app);
@@ -52,8 +65,7 @@ static void activate(GtkApplication *app)
     // Buffer
     buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(view));
     gtk_text_view_set_top_margin(GTK_TEXT_VIEW(view), 20);
-    gtk_text_buffer_set_text(buffer, input, -1);
-
+    gtk_text_buffer_set_text(buffer, output, -1);
 
     // Buttons
     button = gtk_button_new_with_label("1");
