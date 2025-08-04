@@ -3,43 +3,102 @@
 // Testing
 #include <stdio.h>
 
-struct Calculator
-{
-    int     num1;
-    int     num2;
-    int     result;
-}
+GtkWidget*      window;
+GtkWidget*      grid;
+GtkWidget*      button;
+GtkWidget*      view;
+GtkTextBuffer*  buffer;
+GtkTextIter    iter;
 
-struct Output
-{
-    char*   output;
-    int     output_size;
-}
+char*   num_buf;
 
 // ASM
 extern int  add_v(int a, int b);
 extern int  sub_v(int a, int b);
 extern int  mul_v(int a, int b);
 extern int  div_v(int a, int b);
+extern int  str_len(char *str);
+
+struct Calculator
+{
+    int num1;
+    int num2;
+    int result;
+};
 
 static void hello(void)
 {
     g_print("Hello, World!\n");
 }
 
+/*
+void add_number(char *buf)
+{
+    if (o.num1 == 0 && o.num2 == 0)
+    {
+    }
+    else if (o.num1 != 0 && o.num2 == 0)
+    {
+    }
+    else
+    {
+    }
+}
+*/
+
+static void add1_tobuf(void)
+{
+    gtk_text_buffer_get_end_iter(buffer, &iter);
+    gtk_text_buffer_insert(buffer, &iter, "1", -1);
+}
+static void add2_tobuf(void)
+{
+    gtk_text_buffer_get_end_iter(buffer, &iter);
+    gtk_text_buffer_insert(buffer, &iter, "2", -1);
+}
+static void add3_tobuf(void)
+{
+    gtk_text_buffer_get_end_iter(buffer, &iter);
+    gtk_text_buffer_insert(buffer, &iter, "3", -1);
+}
+static void add4_tobuf(void)
+{
+    gtk_text_buffer_get_end_iter(buffer, &iter);
+    gtk_text_buffer_insert(buffer, &iter, "4", -1);
+}
+static void add5_tobuf(void)
+{
+    gtk_text_buffer_get_end_iter(buffer, &iter);
+    gtk_text_buffer_insert(buffer, &iter, "5", -1);
+}
+static void add6_tobuf(void)
+{
+    gtk_text_buffer_get_end_iter(buffer, &iter);
+    gtk_text_buffer_insert(buffer, &iter, "6", -1);
+}
+static void add7_tobuf(void)
+{
+    gtk_text_buffer_get_end_iter(buffer, &iter);
+    gtk_text_buffer_insert(buffer, &iter, "7", -1);
+}
+static void add8_tobuf(void)
+{
+    gtk_text_buffer_get_end_iter(buffer, &iter);
+    gtk_text_buffer_insert(buffer, &iter, "8", -1);
+}
+static void add9_tobuf(void)
+{
+    gtk_text_buffer_get_end_iter(buffer, &iter);
+    gtk_text_buffer_insert(buffer, &iter, "9", -1);
+}
+static void add0_tobuf(void)
+{
+    gtk_text_buffer_get_end_iter(buffer, &iter);
+    gtk_text_buffer_insert(buffer, &iter, "0", -1);
+}
+
 static void activate(GtkApplication *app)
 {
-    GtkWidget*      window;
-    GtkWidget*      grid;
-    GtkWidget*      button;
-    GtkWidget*      view;
-    GtkTextBuffer*  buffer;
-
-    struct Output o;
-
-    o.output_size = 10;
-    o.output = malloc(sizeof(char) * output_size);
-
     // Window
     window = gtk_application_window_new(app);
     gtk_window_set_title(GTK_WINDOW(window), "Window");
@@ -65,51 +124,51 @@ static void activate(GtkApplication *app)
     // Buffer
     buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(view));
     gtk_text_view_set_top_margin(GTK_TEXT_VIEW(view), 20);
-    gtk_text_buffer_set_text(buffer, output, -1);
+    gtk_text_buffer_set_text(buffer, "", -1);
 
     // Buttons
     button = gtk_button_new_with_label("1");
-    g_signal_connect(button, "clicked", G_CALLBACK(hello), NULL);
+    g_signal_connect(button, "clicked", G_CALLBACK(add1_tobuf), NULL);
     // Gtk attach button to grid
     gtk_grid_attach(GTK_GRID(grid), button, 0, 1, 1, 1);
 
     button = gtk_button_new_with_label("2");
-    g_signal_connect(button, "clicked", G_CALLBACK(hello), NULL);
+    g_signal_connect(button, "clicked", G_CALLBACK(add2_tobuf), NULL);
     // Gtk attach button to grid
     gtk_grid_attach(GTK_GRID(grid), button, 1, 1, 1, 1);
 
     button = gtk_button_new_with_label("3");
-    g_signal_connect(button, "clicked", G_CALLBACK(hello), NULL);
+    g_signal_connect(button, "clicked", G_CALLBACK(add3_tobuf), NULL);
     // Gtk attach button to grid
     gtk_grid_attach(GTK_GRID(grid), button, 2, 1, 1, 1);
 
     button = gtk_button_new_with_label("4");
-    g_signal_connect(button, "clicked", G_CALLBACK(hello), NULL);
+    g_signal_connect(button, "clicked", G_CALLBACK(add4_tobuf), NULL);
     // Gtk attach button to grid
     gtk_grid_attach(GTK_GRID(grid), button, 0, 2, 1, 1);
 
     button = gtk_button_new_with_label("5");
-    g_signal_connect(button, "clicked", G_CALLBACK(hello), NULL);
+    g_signal_connect(button, "clicked", G_CALLBACK(add5_tobuf), NULL);
     // Gtk attach button to grid
     gtk_grid_attach(GTK_GRID(grid), button, 1, 2, 1, 1);
 
     button = gtk_button_new_with_label("6");
-    g_signal_connect(button, "clicked", G_CALLBACK(hello), NULL);
+    g_signal_connect(button, "clicked", G_CALLBACK(add6_tobuf), NULL);
     // Gtk attach button to grid
     gtk_grid_attach(GTK_GRID(grid), button, 2, 2, 1, 1);
 
     button = gtk_button_new_with_label("7");
-    g_signal_connect(button, "clicked", G_CALLBACK(hello), NULL);
+    g_signal_connect(button, "clicked", G_CALLBACK(add7_tobuf), NULL);
     // Gtk attach button to grid
     gtk_grid_attach(GTK_GRID(grid), button, 0, 3, 1, 1);
 
     button = gtk_button_new_with_label("8");
-    g_signal_connect(button, "clicked", G_CALLBACK(hello), NULL);
+    g_signal_connect(button, "clicked", G_CALLBACK(add8_tobuf), NULL);
     // Gtk attach button to grid
     gtk_grid_attach(GTK_GRID(grid), button, 1, 3, 1, 1);
 
     button = gtk_button_new_with_label("9");
-    g_signal_connect(button, "clicked", G_CALLBACK(hello), NULL);
+    g_signal_connect(button, "clicked", G_CALLBACK(add9_tobuf), NULL);
     // Gtk attach button to grid
     gtk_grid_attach(GTK_GRID(grid), button, 2, 3, 1, 1);
 
@@ -120,7 +179,7 @@ static void activate(GtkApplication *app)
     gtk_grid_attach(GTK_GRID(grid), button, 0, 4, 1, 1);
 
     button = gtk_button_new_with_label("0");
-    g_signal_connect(button, "clicked", G_CALLBACK(hello), NULL);
+    g_signal_connect(button, "clicked", G_CALLBACK(add0_tobuf), NULL);
     // Gtk attach button to grid
     gtk_grid_attach(GTK_GRID(grid), button, 1, 4, 1, 1);
 
