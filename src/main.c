@@ -200,12 +200,8 @@ static void calculate(void)
     char    op;
 
     buf = get_buf();
-    printf("Calculate buffer: %s\n", buf);
     c.num2 = convert_to_int(buf);
-    printf("Num1 buffer: %d\n", c.num1);
-    printf("Num2 buffer: %d\n", c.num2);
     op = c.operator;
-    printf("Operator buffer: %c\n", op);
     switch (op)
     {
         case '+':
@@ -223,8 +219,6 @@ static void calculate(void)
     }
 
     convert_to_str(buf, c.result);
-    printf("Result: %d\n", c.result);
-    printf("Result: after calc buffer: %s\n", buf);
     gtk_text_buffer_set_text(buffer, buf, -1);
 }
 

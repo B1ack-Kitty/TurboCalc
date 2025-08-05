@@ -13,7 +13,7 @@ CFILES = $(wildcard $(SRCDIR)/*.c)
 ASFILES = $(wildcard $(ASMDIR)/*.asm)
 OUT = $(patsubst $(ASMDIR)/%.asm,$(BUILDDIR)/%.o,$(ASFILES))
 AFLAGS = -f elf64
-CFLAGS = -Wall -Wextra -pedantic -O3 -g -no-pie `pkg-config --cflags gtk+-3.0`
+CFLAGS = -Werror -Wall -Wextra -pedantic -O3 -g -no-pie `pkg-config --cflags gtk+-3.0`
 LIB = `pkg-config --libs gtk+-3.0`
 
 all: dir $(BUILDDIR) $(BINDIR)/$(BIN)
