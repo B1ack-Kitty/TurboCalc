@@ -9,6 +9,7 @@ GtkWidget*      button;
 GtkWidget*      view;
 GtkTextBuffer*  buffer;
 GtkTextIter     iter;
+GtkTextIter     start, end;
 
 
 // ASM
@@ -16,7 +17,6 @@ extern int  add_v(int a, int b);
 extern int  sub_v(int a, int b);
 extern int  mul_v(int a, int b);
 extern int  div_v(int a, int b);
-extern int  str_len(char *str);
 
 struct Calculator
 {
@@ -27,11 +27,6 @@ struct Calculator
 };
 
 struct Calculator c;
-
-static void hello(void)
-{
-    g_print("test");
-}
 
 int convert_to_int(char *str)
 {
@@ -53,50 +48,54 @@ int convert_to_int(char *str)
     return num;
 }
 
-char* convert_to_str(int num)
+void convert_to_str(char *str, int num)
 {
     int     i;
-    int     start, end;
-    int     digit;
-    int     is_negative;
+    int     j;
+    int     k;
+    int     sign;
     char    temp;
-    char    *str;
+
+    sign = num;
 
     i = 0;
-    is_negative = 0;
-    str = "";
-
-    if (num ==0)
-    {
-        str[i++] = '0';
-        str[i] = '\0';
-        return str;
-    }
     if (num < 0)
     {
-        is_negative = 1;
         num = -num;
     }
-    while (num != 0)
+    while (num > 0)
     {
-        digit = num % 10;
-        str[i++] = digit + '0';
-        num = num / 10;
+        str[i] = num % 10 + '0';
+        num /= 10;
+        i++;
     }
-    if (is_negative)
+    if (sign < 0)
         str[i++] = '-';
-    
-    start = 0;
-    end = i - 1;
-    while (start < end)
+
+    str[i] = '\0';
+
+    j = 0;
+    k = i - 1;
+    while (j < k)
     {
-        temp = str[start];
-        str[start] = str[end];
-        str[end] = temp;
-        start++;
-        end--;
+        temp = str[j];
+        str[j] = str[k];
+        str[k] = temp;
+        j++;
+        k--;
     }
-    return str;
+
+}
+
+char* get_buf(void)
+{
+    char    *line;
+
+    gtk_text_buffer_get_start_iter(buffer, &start);
+    gtk_text_buffer_get_end_iter(buffer, &end);
+    line = gtk_text_iter_get_text(&start, &end);
+
+    return line;
 }
 
 static void add1_tobuf(void)
@@ -149,6 +148,43 @@ static void add0_tobuf(void)
     gtk_text_buffer_get_end_iter(buffer, &iter);
     gtk_text_buffer_insert(buffer, &iter, "0", -1);
 }
+static void button_add(void)
+{
+    char    *buf;
+
+    c.operator = '+';
+    buf = get_buf();
+    c.num1 = convert_to_int(buf);
+    gtk_text_buffer_set_text(buffer, "", -1);
+}
+static void button_sub(void)
+{
+    char    *buf;
+
+    c.operator = '-';
+    buf = get_buf();
+    c.num1 = convert_to_int(buf);
+    gtk_text_buffer_set_text(buffer, "", -1);
+}
+static void button_mul(void)
+{
+    char    *buf;
+
+    c.operator = '*';
+    buf = get_buf();
+    c.num1 = convert_to_int(buf);
+    gtk_text_buffer_set_text(buffer, "", -1);
+}
+static void button_div(void)
+{
+    char    *buf;
+
+    c.operator = '/';
+    buf = get_buf();
+    c.num1 = convert_to_int(buf);
+    gtk_text_buffer_set_text(buffer, "", -1);
+}
+
 static void button_clear(void)
 {
     c.num1 = 0;
@@ -160,24 +196,36 @@ static void button_clear(void)
 
 static void calculate(void)
 {
-    op = c.operator
+    char    *buf;
+    char    op;
+
+    buf = get_buf();
+    printf("Calculate buffer: %s\n", buf);
+    c.num2 = convert_to_int(buf);
+    printf("Num1 buffer: %d\n", c.num1);
+    printf("Num2 buffer: %d\n", c.num2);
+    op = c.operator;
+    printf("Operator buffer: %c\n", op);
     switch (op)
     {
         case '+':
-            result = add_v(c.num1, c.num2);
+            c.result = add_v(c.num1, c.num2);
             break;
         case '-':
-            result = sub_v(c.num1, c.num2);
+            c.result = sub_v(c.num1, c.num2);
             break;
         case '*':
-            result = mul_v(c.num1, c.num2);
+            c.result = mul_v(c.num1, c.num2);
             break;
         case '/':
-            result = div_v(c.num1, c.num2);
+            c.result = div_v(c.num1, c.num2);
             break;
     }
 
-    gtk_text_buffer_set_text(buffer, x, -1);
+    convert_to_str(buf, c.result);
+    printf("Result: %d\n", c.result);
+    printf("Result: after calc buffer: %s\n", buf);
+    gtk_text_buffer_set_text(buffer, buf, -1);
 }
 
 static void activate(GtkApplication *app)
