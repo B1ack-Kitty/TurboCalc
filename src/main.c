@@ -30,7 +30,73 @@ struct Calculator c;
 
 static void hello(void)
 {
-    g_print("%s\n", buffer);
+    g_print("test");
+}
+
+int convert_to_int(char *str)
+{
+    int i;
+    int num;
+
+    i = 0;
+    num = 0;
+    while(str[i] != '\0')
+    {
+        if (str[i] >= 48 && str[i] <= 57)
+        {
+            num = num * 10 + (str[i] - 48);
+            i++;
+        }
+        else
+            break;
+    }
+    return num;
+}
+
+char* convert_to_str(int num)
+{
+    int     i;
+    int     start, end;
+    int     digit;
+    int     is_negative;
+    char    temp;
+    char    *str;
+
+    i = 0;
+    is_negative = 0;
+    str = "";
+
+    if (num ==0)
+    {
+        str[i++] = '0';
+        str[i] = '\0';
+        return str;
+    }
+    if (num < 0)
+    {
+        is_negative = 1;
+        num = -num;
+    }
+    while (num != 0)
+    {
+        digit = num % 10;
+        str[i++] = digit + '0';
+        num = num / 10;
+    }
+    if (is_negative)
+        str[i++] = '-';
+    
+    start = 0;
+    end = i - 1;
+    while (start < end)
+    {
+        temp = str[start];
+        str[start] = str[end];
+        str[end] = temp;
+        start++;
+        end--;
+    }
+    return str;
 }
 
 static void add1_tobuf(void)
