@@ -207,6 +207,13 @@ static void calculate(void)
             c.result = mul_v(c.num1, c.num2);
             break;
         case '/':
+            if (c.num2 == 0)
+            {
+                button_clear();
+                gtk_text_buffer_set_text(buffer, "", -1);
+                g_print("Divided by 0!\n");
+                break;
+            }
             c.result = div_v(c.num1, c.num2);
             break;
     }
