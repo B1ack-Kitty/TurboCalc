@@ -1,8 +1,5 @@
 #include <gtk/gtk.h>
 
-// Testing
-#include <stdio.h>
-
 GtkWidget*      window;
 GtkWidget*      grid;
 GtkWidget*      button;
@@ -10,7 +7,6 @@ GtkWidget*      view;
 GtkTextBuffer*  buffer;
 GtkTextIter     iter;
 GtkTextIter     start, end;
-
 
 // ASM
 extern int  add_v(int a, int b);
@@ -28,6 +24,7 @@ struct Calculator
 
 struct Calculator c;
 
+// Helper Functions
 int convert_to_int(char *str)
 {
     int i;
@@ -47,7 +44,6 @@ int convert_to_int(char *str)
     }
     return num;
 }
-
 void convert_to_str(char *str, int num)
 {
     int     i;
@@ -84,9 +80,7 @@ void convert_to_str(char *str, int num)
         j++;
         k--;
     }
-
 }
-
 char* get_buf(void)
 {
     char    *line;
@@ -97,7 +91,7 @@ char* get_buf(void)
 
     return line;
 }
-
+// Button Logic
 static void add1_tobuf(void)
 {
     gtk_text_buffer_get_end_iter(buffer, &iter);
@@ -148,6 +142,7 @@ static void add0_tobuf(void)
     gtk_text_buffer_get_end_iter(buffer, &iter);
     gtk_text_buffer_insert(buffer, &iter, "0", -1);
 }
+// Operation Logic
 static void button_add(void)
 {
     char    *buf;
@@ -184,7 +179,6 @@ static void button_div(void)
     c.num1 = convert_to_int(buf);
     gtk_text_buffer_set_text(buffer, "", -1);
 }
-
 static void button_clear(void)
 {
     c.num1 = 0;
@@ -193,7 +187,6 @@ static void button_clear(void)
     c.result = 0;
     gtk_text_buffer_set_text(buffer, "", -1);
 }
-
 static void calculate(void)
 {
     char    *buf;
@@ -217,11 +210,10 @@ static void calculate(void)
             c.result = div_v(c.num1, c.num2);
             break;
     }
-
     convert_to_str(buf, c.result);
     gtk_text_buffer_set_text(buffer, buf, -1);
 }
-
+// Main Logic
 static void activate(GtkApplication *app)
 {
     // Window
@@ -254,83 +246,66 @@ static void activate(GtkApplication *app)
     // Buttons
     button = gtk_button_new_with_label("1");
     g_signal_connect(button, "clicked", G_CALLBACK(add1_tobuf), NULL);
-    // Gtk attach button to grid
     gtk_grid_attach(GTK_GRID(grid), button, 0, 1, 1, 1);
 
     button = gtk_button_new_with_label("2");
     g_signal_connect(button, "clicked", G_CALLBACK(add2_tobuf), NULL);
-    // Gtk attach button to grid
     gtk_grid_attach(GTK_GRID(grid), button, 1, 1, 1, 1);
 
     button = gtk_button_new_with_label("3");
     g_signal_connect(button, "clicked", G_CALLBACK(add3_tobuf), NULL);
-    // Gtk attach button to grid
     gtk_grid_attach(GTK_GRID(grid), button, 2, 1, 1, 1);
 
     button = gtk_button_new_with_label("4");
     g_signal_connect(button, "clicked", G_CALLBACK(add4_tobuf), NULL);
-    // Gtk attach button to grid
     gtk_grid_attach(GTK_GRID(grid), button, 0, 2, 1, 1);
 
     button = gtk_button_new_with_label("5");
     g_signal_connect(button, "clicked", G_CALLBACK(add5_tobuf), NULL);
-    // Gtk attach button to grid
     gtk_grid_attach(GTK_GRID(grid), button, 1, 2, 1, 1);
 
     button = gtk_button_new_with_label("6");
     g_signal_connect(button, "clicked", G_CALLBACK(add6_tobuf), NULL);
-    // Gtk attach button to grid
     gtk_grid_attach(GTK_GRID(grid), button, 2, 2, 1, 1);
 
     button = gtk_button_new_with_label("7");
     g_signal_connect(button, "clicked", G_CALLBACK(add7_tobuf), NULL);
-    // Gtk attach button to grid
     gtk_grid_attach(GTK_GRID(grid), button, 0, 3, 1, 1);
 
     button = gtk_button_new_with_label("8");
     g_signal_connect(button, "clicked", G_CALLBACK(add8_tobuf), NULL);
-    // Gtk attach button to grid
     gtk_grid_attach(GTK_GRID(grid), button, 1, 3, 1, 1);
 
     button = gtk_button_new_with_label("9");
     g_signal_connect(button, "clicked", G_CALLBACK(add9_tobuf), NULL);
-    // Gtk attach button to grid
     gtk_grid_attach(GTK_GRID(grid), button, 2, 3, 1, 1);
-
 
     button = gtk_button_new_with_label("CE");
     g_signal_connect(button, "clicked", G_CALLBACK(button_clear), NULL);
-    // Gtk attach button to grid
     gtk_grid_attach(GTK_GRID(grid), button, 0, 4, 1, 1);
 
     button = gtk_button_new_with_label("0");
     g_signal_connect(button, "clicked", G_CALLBACK(add0_tobuf), NULL);
-    // Gtk attach button to grid
     gtk_grid_attach(GTK_GRID(grid), button, 1, 4, 1, 1);
 
     button = gtk_button_new_with_label("=");
     g_signal_connect(button, "clicked", G_CALLBACK(calculate), NULL);
-    // Gtk attach button to grid
     gtk_grid_attach(GTK_GRID(grid), button, 2, 4, 1, 1);
 
     button = gtk_button_new_with_label("+");
     g_signal_connect(button, "clicked", G_CALLBACK(button_add), NULL);
-    // Gtk attach button to grid
     gtk_grid_attach(GTK_GRID(grid), button, 4, 1, 1, 1);
 
     button = gtk_button_new_with_label("-");
     g_signal_connect(button, "clicked", G_CALLBACK(button_sub), NULL);
-    // Gtk attach button to grid
     gtk_grid_attach(GTK_GRID(grid), button, 4, 2, 1, 1);
 
     button = gtk_button_new_with_label("*");
     g_signal_connect(button, "clicked", G_CALLBACK(button_mul), NULL);
-    // Gtk attach button to grid
     gtk_grid_attach(GTK_GRID(grid), button, 4, 3, 1, 1);
 
     button = gtk_button_new_with_label("/");
     g_signal_connect(button, "clicked", G_CALLBACK(button_div), NULL);
-    // Gtk attach button to grid
     gtk_grid_attach(GTK_GRID(grid), button, 4, 4, 1, 1);
 
     gtk_widget_show_all(window);
