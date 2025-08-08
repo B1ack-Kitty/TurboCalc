@@ -6,6 +6,6 @@ global div_v
 
 div_v:
     mov rax, rdi
-    idiv rsi
     cqo
+    idiv rsi
     ret
