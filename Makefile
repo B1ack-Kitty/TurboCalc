@@ -7,7 +7,7 @@ SRCDIR = src
 BUILDDIR = build
 ASMDIR = asm
 
-BIN = app
+BIN = TurboCalc
 
 CFILES = $(wildcard $(SRCDIR)/*.c)
 ASFILES = $(wildcard $(ASMDIR)/*.asm)
