@@ -223,6 +223,8 @@ static void calculate(void)
 // Main Logic
 static void activate(GtkApplication *app)
 {
+    g_object_set(gtk_settings_get_default(), "gtk-application-prefer-dark-theme", TRUE, NULL);
+
     // Window
     window = gtk_application_window_new(app);
     gtk_window_set_title(GTK_WINDOW(window), "Window");
@@ -243,7 +245,7 @@ static void activate(GtkApplication *app)
 
     // View
     view = gtk_text_view_new();
-    gtk_grid_attach(GTK_GRID(grid), view, 0, 0, 4, 1);
+    gtk_grid_attach(GTK_GRID(grid), view, 0, 0, 5, 1);
 
     // Buffer
     buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(view));
