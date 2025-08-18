@@ -1,6 +1,7 @@
 #include <gtk/gtk.h>
 
 GtkWidget*      window;
+GtkWidget*      scroll_window;
 GtkWidget*      grid;
 GtkWidget*      button;
 GtkWidget*      view;
@@ -229,11 +230,15 @@ static void activate(GtkApplication *app)
     window = gtk_application_window_new(app);
     gtk_window_set_title(GTK_WINDOW(window), "Window");
     gtk_window_set_default_size(GTK_WINDOW(window), 200, 200);
+    gtk_window_set_resizable(GTK_WINDOW(window), FALSE);
+
+    // Scrolled Window
+    scroll_window = gtk_scrolled_window_new(NULL, NULL);
 
     // Grid
     grid = gtk_grid_new();
-
     gtk_container_add(GTK_CONTAINER(window), grid);
+    gtk_grid_attach(GTK_GRID(grid), scroll_window, 0, 0, 5, 1);
 
     // Align
     // y
@@ -245,7 +250,8 @@ static void activate(GtkApplication *app)
 
     // View
     view = gtk_text_view_new();
-    gtk_grid_attach(GTK_GRID(grid), view, 0, 0, 5, 1);
+    gtk_container_add(GTK_CONTAINER(scroll_window), view);
+    gtk_text_view_set_wrap_mode(GTK_TEXT_VIEW(view), GTK_WRAP_WORD_CHAR);
 
     // Buffer
     buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(view));
